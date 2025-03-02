@@ -1,61 +1,60 @@
-# include <cmath>
-# include <cstdlib>
-# include <cstring>
-# include <ctime>
-# include <fstream>
-# include <iomanip>
-# include <iostream>
+#include <cmath>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
+#include <fstream>
+#include <iostream>
+#include <gtest/gtest.h> 
 
 using namespace std;
 
 # include "naca.hpp"
 
-int main ( );
 void test01 ( );
 void test02 ( );
 
 //****************************************************************************80
 
-int main ( )
+// int main ( )
 
-//****************************************************************************80
-//
-//  Purpose:
-//
-//    naca_test() tests naca().
-//
-//  Licensing:
-//
-//    This code is distributed under the MIT license.
-//
-//  Modified:
-//
-//    22 May 2014
-//
-//  Author:
-//
-//    John Burkardt
-//
-{
-  timestamp ( );
-  cout << "\n";
-  cout << "NACA_TEST:\n";
-  cout << "  C++ version\n";
-  cout << "  Test the NACA library.\n";
+// //****************************************************************************80
+// //
+// //  Purpose:
+// //
+// //    naca_test() tests naca().
+// //
+// //  Licensing:
+// //
+// //    This code is distributed under the MIT license.
+// //
+// //  Modified:
+// //
+// //    22 May 2014
+// //
+// //  Author:
+// //
+// //    John Burkardt
+// //
+// {
+//   timestamp ( );
+//   cout << "\n";
+//   cout << "NACA_TEST:\n";
+//   cout << "  C++ version\n";
+//   cout << "  Test the NACA library.\n";
 
-  test01 ( );
-  test02 ( );
-//
-//  Terminate.
-//
-  cout << "\n";
-  cout << "NACA_TEST:\n";
-  cout << "  Normal end of execution.\n";
-  cout << "\n";
-  timestamp ( );
+//   test01 ( );
+//   test02 ( );
+// //
+// //  Terminate.
+// //
+//   cout << "\n";
+//   cout << "NACA_TEST:\n";
+//   cout << "  Normal end of execution.\n";
+//   cout << "\n";
+//   timestamp ( );
 
-  return 0;
-}
+//   return 0;
+// }
 //****************************************************************************80
 
 void test01 ( )
@@ -281,3 +280,17 @@ void test02 ( )
   return;
 }
 
+TEST(NacaTest, SymmetricAirfoil) {
+  test01();
+  // Add assertions to validate the output if necessary
+}
+
+TEST(NacaTest, CamberedAirfoil) {
+  test02();
+  // Add assertions to validate the output if necessary
+}
+
+int main(int argc, char **argv) {
+  ::testing::InitGoogleTest(&argc, argv);
+  return RUN_ALL_TESTS();
+}
