@@ -1,0 +1,1 @@
+add_executable(NACA naca.cpp naca_test.cpp)
