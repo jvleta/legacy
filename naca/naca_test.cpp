@@ -6,8 +6,6 @@
 #include <gtest/gtest.h>
 #include <iostream>
 
-using namespace std;
-
 #include "naca.hpp"
 
 void test01() {
@@ -31,9 +29,9 @@ void test01() {
   //
 
   double c;
-  string command_filename = "symmetric_commands.txt";
-  ofstream command_unit;
-  string data_filename = "symmetric_data.txt";
+  std::string command_filename = "symmetric_commands.txt";
+  std::ofstream command_unit;
+  std::string data_filename = "symmetric_data.txt";
   int i;
   int n = 51;
   double ratio;
@@ -46,10 +44,10 @@ void test01() {
   double y_max;
   double y_min;
 
-  cout << "\n";
-  cout << "TEST01\n";
-  cout << "  NACA4_SYMMETRIC evaluates y(x) for a NACA\n";
-  cout << "  symmetric airfoil defined by a 4-digit code.\n";
+  std::cout << "\n";
+  std::cout << "TEST01\n";
+  std::cout << "  NACA4_SYMMETRIC evaluates y(x) for a NACA\n";
+  std::cout << "  symmetric airfoil defined by a 4-digit code.\n";
 
   c = 10.0;
   t = 0.15;
@@ -80,7 +78,7 @@ void test01() {
   //  Save data to a file.
   //
   r8mat_write(data_filename, 2, 2 * n, xy);
-  cout << "  Data saved in file '" << data_filename << "'\n";
+  std::cout << "  Data saved in file '" << data_filename << "'\n";
   //
   //  Create the command file.
   //
@@ -100,7 +98,7 @@ void test01() {
 
   command_unit.close();
 
-  cout << "  Created command file '" << command_filename << "'\n";
+  std::cout << "  Created command file '" << command_filename << "'\n";
 
   delete[] x;
   delete[] y;
@@ -129,9 +127,9 @@ void test02() {
   //
 
   double c;
-  string command_filename = "cambered_commands.txt";
-  ofstream command_unit;
-  string data_filename = "cambered_data.txt";
+  std::string command_filename = "cambered_commands.txt";
+  std::ofstream command_unit;
+  std::string data_filename = "cambered_data.txt";
   int i;
   double m;
   int n = 51;
@@ -149,10 +147,10 @@ void test02() {
   double *yl;
   double *yu;
 
-  cout << "\n";
-  cout << "TEST02\n";
-  cout << "  NACA4_CAMBERED evaluates (xu,yu) and (xl,yl) for a NACA\n";
-  cout << "  cambered airfoil defined by a 4-digit code.\n";
+  std::cout << "\n";
+  std::cout << "TEST02\n";
+  std::cout << "  NACA4_CAMBERED evaluates (xu,yu) and (xl,yl) for a NACA\n";
+  std::cout << "  cambered airfoil defined by a 4-digit code.\n";
 
   m = 0.02;
   p = 0.4;
@@ -192,7 +190,7 @@ void test02() {
   //  Save data to a file.
   //
   r8mat_write(data_filename, 2, 2 * n, xy);
-  cout << "  Data saved in file '" << data_filename << "'\n";
+  std::cout << "  Data saved in file '" << data_filename << "'\n";
   //
   //  Create the command file.
   //
@@ -212,7 +210,7 @@ void test02() {
 
   command_unit.close();
 
-  cout << "  Created command file '" << command_filename << "'\n";
+  std::cout << "  Created command file '" << command_filename << "'\n";
 
   delete[] xc;
   delete[] xl;

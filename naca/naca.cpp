@@ -6,8 +6,6 @@
 #include <iomanip>
 #include <iostream>
 
-using namespace std;
-
 #include "naca.hpp"
 
 void naca4_cambered(double m, double p, double t, double c, int n, double xc[],
@@ -78,10 +76,10 @@ void naca4_cambered(double m, double p, double t, double c, int n, double xc[],
 
     dycdx = 2.0 * m * (p - xc[i] / c) / divisor;
 
-    theta = atan(dycdx);
+    theta = std::atan(dycdx);
 
     yt = 5.0 * t * c *
-         (0.2969 * sqrt(xc[i] / c) +
+         (0.2969 * std::sqrt(xc[i] / c) +
           ((((-0.1015) * (xc[i] / c) + 0.2843) * (xc[i] / c) - 0.3516) *
                (xc[i] / c) -
            0.1260) *
@@ -96,10 +94,10 @@ void naca4_cambered(double m, double p, double t, double c, int n, double xc[],
       yc = 0.0;
     }
 
-    xu[i] = xc[i] - yt * sin(theta);
-    yu[i] = yc + yt * cos(theta);
-    xl[i] = xc[i] + yt * sin(theta);
-    yl[i] = yc - yt * cos(theta);
+    xu[i] = xc[i] - yt * std::sin(theta);
+    yu[i] = yc + yt * std::cos(theta);
+    xl[i] = xc[i] + yt * std::sin(theta);
+    yl[i] = yc - yt * std::cos(theta);
   }
   return;
 }
@@ -151,7 +149,7 @@ double *naca4_symmetric(double t, double c, int n, double x[]) {
 
   for (i = 0; i < n; i++) {
     y[i] = 5.0 * t * c *
-           (0.2969 * sqrt(x[i] / c) +
+           (0.2969 * std::sqrt(x[i] / c) +
             ((((-0.1015) * (x[i] / c) + 0.2843) * (x[i] / c) - 0.3516) *
                  (x[i] / c) -
              0.1260) *
@@ -161,27 +159,27 @@ double *naca4_symmetric(double t, double c, int n, double x[]) {
   return y;
 }
 
-void r8mat_write(string output_filename, int m, int n, double table[]) {
+void r8mat_write(std::string output_filename, int m, int n, double table[]) {
   int i;
   int j;
-  ofstream output;
+  std::ofstream output;
   //
   //  Open the file.
   //
   output.open(output_filename.c_str());
 
   if (!output) {
-    cerr << "\n";
-    cerr << "R8MAT_WRITE - Fatal error!\n";
-    cerr << "  Could not open the output file.\n";
-    exit(1);
+    std::cerr << "\n";
+    std::cerr << "R8MAT_WRITE - Fatal error!\n";
+    std::cerr << "  Could not open the output file.\n";
+    std::exit(1);
   }
   //
   //  Write the data.
   //
   for (j = 0; j < n; j++) {
     for (i = 0; i < m; i++) {
-      output << "  " << setw(24) << setprecision(16) << table[i + j * m];
+      output << "  " << std::setw(24) << std::setprecision(16) << table[i + j * m];
     }
     output << "\n";
   }
