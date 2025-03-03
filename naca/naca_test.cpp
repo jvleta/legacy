@@ -44,8 +44,8 @@ namespace {
       a[0] = (a_first + a_last) / 2.0;
     } else {
       for (int i = 0; i < n; i++) {
-        a[i] = ((double)(n - 1 - i) * a_first + (double)(i)*a_last) /
-               (double)(n - 1);
+        a[i] = (static_cast<double>(n - 1 - i) * a_first + static_cast<double>(i) * a_last) /
+               static_cast<double>(n - 1);
       }
     }
     return a;
@@ -244,10 +244,10 @@ void test02() {
   //
   //  Determine size ratio.
   //
-  x_min = fmin(r8vec_min(n, xl), r8vec_min(n, xu));
-  x_max = fmax(r8vec_max(n, xl), r8vec_max(n, xu));
-  y_min = fmin(r8vec_min(n, yl), r8vec_min(n, yu));
-  y_max = fmax(r8vec_max(n, yl), r8vec_max(n, yu));
+  x_min = std::fmin(r8vec_min(n, xl), r8vec_min(n, xu));
+  x_max = std::fmax(r8vec_max(n, xl), r8vec_max(n, xu));
+  y_min = std::fmin(r8vec_min(n, yl), r8vec_min(n, yu));
+  y_max = std::fmax(r8vec_max(n, yl), r8vec_max(n, yu));
   ratio = (y_max - y_min) / (x_max - x_min);
   //
   //  Save data to a file.
