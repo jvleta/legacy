@@ -1,6 +1,7 @@
 #include <string>
+#include <vector>
 
-void naca4_cambered(double m, double p, double t, double c, int n, double xc[],
-                    double xu[], double yu[], double xl[], double yl[]);
+void naca4_cambered(double m, double p, double t, double c, int n, const std::vector<double>& xc,
+                    std::vector<double>& xu, std::vector<double>& yu, std::vector<double>& xl, std::vector<double>& yl);
 
-double *naca4_symmetric(double t, double c, int n, double x[]);
+std::vector<double> naca4_symmetric(double t, double c, int n, const std::vector<double>& x);

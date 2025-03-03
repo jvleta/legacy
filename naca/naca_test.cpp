@@ -5,11 +5,12 @@
 #include <fstream>
 #include <gtest/gtest.h>
 #include <iostream>
+#include <vector>
 
 #include "naca.hpp"
 
 namespace {
-  void r8mat_write(std::string output_filename, int m, int n, double table[]) {
+  void r8mat_write(std::string output_filename, int m, int n, const std::vector<double>& table) {
     int i;
     int j;
     std::ofstream output;
@@ -36,16 +37,13 @@ namespace {
     return;
   }
 
-  double *r8vec_linspace_new(int n, double a_first, double a_last) {
-    double *a;
-    int i;
-
-    a = new double[n];
+  std::vector<double> r8vec_linspace_new(int n, double a_first, double a_last) {
+    std::vector<double> a(n);
 
     if (n == 1) {
       a[0] = (a_first + a_last) / 2.0;
     } else {
-      for (i = 0; i < n; i++) {
+      for (int i = 0; i < n; i++) {
         a[i] = ((double)(n - 1 - i) * a_first + (double)(i)*a_last) /
                (double)(n - 1);
       }
@@ -53,13 +51,10 @@ namespace {
     return a;
   }
 
-  double r8vec_max(int n, double r8vec[]) {
-    int i;
-    double value;
+  double r8vec_max(int n, const std::vector<double>& r8vec) {
+    double value = r8vec[0];
 
-    value = r8vec[0];
-
-    for (i = 1; i < n; i++) {
+    for (int i = 1; i < n; i++) {
       if (value < r8vec[i]) {
         value = r8vec[i];
       }
@@ -67,13 +62,10 @@ namespace {
     return value;
   }
 
-  double r8vec_min(int n, double r8vec[]) {
-    int i;
-    double value;
+  double r8vec_min(int n, const std::vector<double>& r8vec) {
+    double value = r8vec[0];
 
-    value = r8vec[0];
-
-    for (i = 1; i < n; i++) {
+    for (int i = 1; i < n; i++) {
       if (r8vec[i] < value) {
         value = r8vec[i];
       }
@@ -110,11 +102,11 @@ void test01() {
   int n = 51;
   double ratio;
   double t;
-  double *x;
+  std::vector<double> x;
   double x_max;
   double x_min;
-  double *xy;
-  double *y;
+  std::vector<double> xy;
+  std::vector<double> y;
   double y_max;
   double y_min;
 
@@ -130,7 +122,7 @@ void test01() {
   //
   //  Reorganize data into a single object.
   //
-  xy = new double[2 * 2 * n];
+  xy.resize(2 * 2 * n);
 
   for (i = 0; i < n; i++) {
     xy[0 + i * 2] = x[i];
@@ -174,9 +166,6 @@ void test01() {
 
   std::cout << "  Created command file '" << command_filename << "'\n";
 
-  delete[] x;
-  delete[] y;
-
   return;
 }
 
@@ -212,14 +201,14 @@ void test02() {
   double t;
   double x_max;
   double x_min;
-  double *xc;
-  double *xl;
-  double *xu;
-  double *xy;
+  std::vector<double> xc;
+  std::vector<double> xl;
+  std::vector<double> xu;
+  std::vector<double> xy;
   double y_max;
   double y_min;
-  double *yl;
-  double *yu;
+  std::vector<double> yl;
+  std::vector<double> yu;
 
   std::cout << "\n";
   std::cout << "TEST02\n";
@@ -233,16 +222,16 @@ void test02() {
 
   xc = r8vec_linspace_new(n, 0.0, c);
 
-  xu = new double[n];
-  xl = new double[n];
-  yu = new double[n];
-  yl = new double[n];
+  xu.resize(n);
+  xl.resize(n);
+  yu.resize(n);
+  yl.resize(n);
 
   naca4_cambered(m, p, t, c, n, xc, xu, yu, xl, yl);
   //
   //  Reorganize data into a single object.
   //
-  xy = new double[2 * 2 * n];
+  xy.resize(2 * 2 * n);
 
   for (i = 0; i < n; i++) {
     xy[0 + i * 2] = xl[i];
@@ -285,13 +274,6 @@ void test02() {
   command_unit.close();
 
   std::cout << "  Created command file '" << command_filename << "'\n";
-
-  delete[] xc;
-  delete[] xl;
-  delete[] xu;
-  delete[] xy;
-  delete[] yl;
-  delete[] yu;
 
   return;
 }

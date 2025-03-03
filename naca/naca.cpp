@@ -5,11 +5,12 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <vector>
 
 #include "naca.hpp"
 
-void naca4_cambered(double m, double p, double t, double c, int n, double xc[],
-                    double xu[], double yu[], double xl[], double yl[]) {
+void naca4_cambered(double m, double p, double t, double c, int n, const std::vector<double>& xc,
+                    std::vector<double>& xu, std::vector<double>& yu, std::vector<double>& xl, std::vector<double>& yl) {
   //
   //  Purpose:
   //
@@ -99,7 +100,7 @@ void naca4_cambered(double m, double p, double t, double c, int n, double xc[],
   return;
 }
 
-double *naca4_symmetric(double t, double c, int n, double x[]) {
+std::vector<double> naca4_symmetric(double t, double c, int n, const std::vector<double>& x) {
   //
   //  Purpose:
   //
@@ -139,7 +140,7 @@ double *naca4_symmetric(double t, double c, int n, double x[]) {
   //    corresponding value of Y so that (X,Y) is on the upper wing surface, and
   //    (X,-Y) is on the lower wing surface.
   //
-  double *y = new double[n];
+  std::vector<double> y(n);
 
   for (int i = 0; i < n; i++) {
     y[i] = 5.0 * t * c *
