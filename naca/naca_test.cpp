@@ -3,81 +3,33 @@
 #include <cstring>
 #include <ctime>
 #include <fstream>
+#include <gtest/gtest.h>
 #include <iostream>
-#include <gtest/gtest.h> 
 
 using namespace std;
 
-# include "naca.hpp"
+#include "naca.hpp"
 
-void test01 ( );
-void test02 ( );
+void test01() {
+  //****************************************************************************80
+  //
+  //  Purpose:
+  //
+  //    TEST01 tests NACA4_SYMMETRIC.
+  //
+  //  Licensing:
+  //
+  //    This code is distributed under the MIT license.
+  //
+  //  Modified:
+  //
+  //    22 May 2014
+  //
+  //  Author:
+  //
+  //    John Burkardt
+  //
 
-//****************************************************************************80
-
-// int main ( )
-
-// //****************************************************************************80
-// //
-// //  Purpose:
-// //
-// //    naca_test() tests naca().
-// //
-// //  Licensing:
-// //
-// //    This code is distributed under the MIT license.
-// //
-// //  Modified:
-// //
-// //    22 May 2014
-// //
-// //  Author:
-// //
-// //    John Burkardt
-// //
-// {
-//   timestamp ( );
-//   cout << "\n";
-//   cout << "NACA_TEST:\n";
-//   cout << "  C++ version\n";
-//   cout << "  Test the NACA library.\n";
-
-//   test01 ( );
-//   test02 ( );
-// //
-// //  Terminate.
-// //
-//   cout << "\n";
-//   cout << "NACA_TEST:\n";
-//   cout << "  Normal end of execution.\n";
-//   cout << "\n";
-//   timestamp ( );
-
-//   return 0;
-// }
-//****************************************************************************80
-
-void test01 ( )
-
-//****************************************************************************80
-//
-//  Purpose:
-//
-//    TEST01 tests NACA4_SYMMETRIC.
-//
-//  Licensing:
-//
-//    This code is distributed under the MIT license.
-//
-//  Modified:
-//
-//    22 May 2014
-//
-//  Author:
-//
-//    John Burkardt
-//
-{
   double c;
   string command_filename = "symmetric_commands.txt";
   ofstream command_unit;
@@ -101,40 +53,38 @@ void test01 ( )
 
   c = 10.0;
   t = 0.15;
-  x = r8vec_linspace_new ( n, 0.0, c );
-  y = naca4_symmetric ( t, c, n, x );
-//
-//  Reorganize data into a single object.
-//
-  xy = new double[2*2*n];
+  x = r8vec_linspace_new(n, 0.0, c);
+  y = naca4_symmetric(t, c, n, x);
+  //
+  //  Reorganize data into a single object.
+  //
+  xy = new double[2 * 2 * n];
 
-  for ( i = 0; i < n; i++ )
-  {
-    xy[0+i*2] = x[i];
-    xy[1+i*2] = -y[i];
+  for (i = 0; i < n; i++) {
+    xy[0 + i * 2] = x[i];
+    xy[1 + i * 2] = -y[i];
   }
-  for ( i = 0; i < n; i++ )
-  {
-    xy[0+(n+i)*2] = x[n-1-i];
-    xy[1+(n+i)*2] = y[n-1-i];
+  for (i = 0; i < n; i++) {
+    xy[0 + (n + i) * 2] = x[n - 1 - i];
+    xy[1 + (n + i) * 2] = y[n - 1 - i];
   }
-//
-//  Determine size ratio.
-//
-  x_min = r8vec_min ( n, x );
-  x_max = r8vec_max ( n, x );
-  y_max = r8vec_max ( n, y );
-  y_min = - y_max;
-  ratio = ( y_max - y_min ) / ( x_max - x_min );
-//
-//  Save data to a file.
-//
-  r8mat_write ( data_filename, 2, 2 * n, xy );
+  //
+  //  Determine size ratio.
+  //
+  x_min = r8vec_min(n, x);
+  x_max = r8vec_max(n, x);
+  y_max = r8vec_max(n, y);
+  y_min = -y_max;
+  ratio = (y_max - y_min) / (x_max - x_min);
+  //
+  //  Save data to a file.
+  //
+  r8mat_write(data_filename, 2, 2 * n, xy);
   cout << "  Data saved in file '" << data_filename << "'\n";
-//
-//  Create the command file.
-//
-  command_unit.open ( command_filename.c_str ( ) );
+  //
+  //  Create the command file.
+  //
+  command_unit.open(command_filename.c_str());
   command_unit << "set term png\n";
   command_unit << "set grid\n";
   command_unit << "set style data lines\n";
@@ -145,42 +95,39 @@ void test01 ( )
   command_unit << "set xlabel '<---X--->'\n";
   command_unit << "set ylabel '<---Y--->'\n";
   command_unit << "set title 'NACA Symmetric Airfoil'\n";
-  command_unit << "plot '" << data_filename 
-               << "' using 1:2 with lines lw 3\n";
+  command_unit << "plot '" << data_filename << "' using 1:2 with lines lw 3\n";
   command_unit << "quit\n";
 
-  command_unit.close ( );
+  command_unit.close();
 
   cout << "  Created command file '" << command_filename << "'\n";
 
-  delete [] x;
-  delete [] y;
+  delete[] x;
+  delete[] y;
 
   return;
 }
-//****************************************************************************80
 
-void test02 ( )
+void test02() {
+  //****************************************************************************80
+  //
+  //  Purpose:
+  //
+  //    TEST02 tests NACA4_CAMBERED.
+  //
+  //  Licensing:
+  //
+  //    This code is distributed under the MIT license.
+  //
+  //  Modified:
+  //
+  //    21 May 2014
+  //
+  //  Author:
+  //
+  //    John Burkardt
+  //
 
-//****************************************************************************80
-//
-//  Purpose:
-//
-//    TEST02 tests NACA4_CAMBERED.
-//
-//  Licensing:
-//
-//    This code is distributed under the MIT license.
-//
-//  Modified:
-//
-//    21 May 2014
-//
-//  Author:
-//
-//    John Burkardt
-//
-{
   double c;
   string command_filename = "cambered_commands.txt";
   ofstream command_unit;
@@ -212,46 +159,44 @@ void test02 ( )
   t = 0.12;
   c = 10.0;
 
-  xc = r8vec_linspace_new ( n, 0.0, c );
+  xc = r8vec_linspace_new(n, 0.0, c);
 
   xu = new double[n];
   xl = new double[n];
   yu = new double[n];
   yl = new double[n];
 
-  naca4_cambered ( m, p, t, c, n, xc, xu, yu, xl, yl );
-//
-//  Reorganize data into a single object.
-//
-  xy = new double[2*2*n];
+  naca4_cambered(m, p, t, c, n, xc, xu, yu, xl, yl);
+  //
+  //  Reorganize data into a single object.
+  //
+  xy = new double[2 * 2 * n];
 
-  for ( i = 0; i < n; i++ )
-  {
-    xy[0+i*2] = xl[i];
-    xy[1+i*2] = yl[i];
+  for (i = 0; i < n; i++) {
+    xy[0 + i * 2] = xl[i];
+    xy[1 + i * 2] = yl[i];
   }
-  for ( i = 0; i < n; i++ )
-  {
-    xy[0+(n+i)*2] = xu[n-1-i];
-    xy[1+(n+i)*2] = yu[n-1-i];
+  for (i = 0; i < n; i++) {
+    xy[0 + (n + i) * 2] = xu[n - 1 - i];
+    xy[1 + (n + i) * 2] = yu[n - 1 - i];
   }
-//
-//  Determine size ratio.
-//
-  x_min = fmin ( r8vec_min ( n, xl ), r8vec_min ( n, xu ) );
-  x_max = fmax ( r8vec_max ( n, xl ), r8vec_max ( n, xu ) );
-  y_min = fmin ( r8vec_min ( n, yl ), r8vec_min ( n, yu ) );
-  y_max = fmax ( r8vec_max ( n, yl ), r8vec_max ( n, yu ) );
-  ratio = ( y_max - y_min ) / ( x_max - x_min );
-//
-//  Save data to a file.
-//
-  r8mat_write ( data_filename, 2, 2 * n, xy );
+  //
+  //  Determine size ratio.
+  //
+  x_min = fmin(r8vec_min(n, xl), r8vec_min(n, xu));
+  x_max = fmax(r8vec_max(n, xl), r8vec_max(n, xu));
+  y_min = fmin(r8vec_min(n, yl), r8vec_min(n, yu));
+  y_max = fmax(r8vec_max(n, yl), r8vec_max(n, yu));
+  ratio = (y_max - y_min) / (x_max - x_min);
+  //
+  //  Save data to a file.
+  //
+  r8mat_write(data_filename, 2, 2 * n, xy);
   cout << "  Data saved in file '" << data_filename << "'\n";
-//
-//  Create the command file.
-//
-  command_unit.open ( command_filename.c_str ( ) );
+  //
+  //  Create the command file.
+  //
+  command_unit.open(command_filename.c_str());
   command_unit << "set term png\n";
   command_unit << "set grid\n";
   command_unit << "set style data lines\n";
@@ -262,20 +207,19 @@ void test02 ( )
   command_unit << "set xlabel '<---X--->'\n";
   command_unit << "set ylabel '<---Y--->'\n";
   command_unit << "set title 'NACA Cambered Airfoil'\n";
-  command_unit << "plot '" << data_filename 
-               << "' using 1:2 with lines lw 3\n";
+  command_unit << "plot '" << data_filename << "' using 1:2 with lines lw 3\n";
   command_unit << "quit\n";
 
-  command_unit.close ( );
+  command_unit.close();
 
   cout << "  Created command file '" << command_filename << "'\n";
 
-  delete [] xc;
-  delete [] xl;
-  delete [] xu;
-  delete [] xy;
-  delete [] yl;
-  delete [] yu;
+  delete[] xc;
+  delete[] xl;
+  delete[] xu;
+  delete[] xy;
+  delete[] yl;
+  delete[] yu;
 
   return;
 }
