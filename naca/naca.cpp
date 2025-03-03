@@ -58,41 +58,38 @@ void naca4_cambered(double m, double p, double t, double c, int n, double xc[],
   //    on the upper airfoil surface and (XL,YL) on the lower airfoil surface.
   //
 
-  double divisor;
-  double dycdx;
-  int i;
-  double theta;
-  double yc;
-  double yt;
+  for (int i = 0; i < n; i++) {
 
-  for (i = 0; i < n; i++) {
-    if (0.0 <= xc[i] / c && xc[i] / c <= p) {
-      divisor = p * p;
-    } else if (p <= xc[i] / c && xc[i] / c <= 1.0) {
-      divisor = pow(1.0 - p, 2);
-    } else {
-      divisor = 1.0;
-    }
+    double divisor = [&]() {
+      if (0.0 <= xc[i] / c && xc[i] / c <= p) {
+        return p * p;
+      } else if (p <= xc[i] / c && xc[i] / c <= 1.0) {
+        return pow(1.0 - p, 2);
+      } else {
+        return 1.0;
+      }
+    }();
 
-    dycdx = 2.0 * m * (p - xc[i] / c) / divisor;
+    double dycdx = 2.0 * m * (p - xc[i] / c) / divisor;
+    double theta = std::atan(dycdx);
 
-    theta = std::atan(dycdx);
+    double yt = 5.0 * t * c *
+                (0.2969 * std::sqrt(xc[i] / c) +
+                 ((((-0.1015) * (xc[i] / c) + 0.2843) * (xc[i] / c) - 0.3516) *
+                      (xc[i] / c) -
+                  0.1260) *
+                     (xc[i] / c));
 
-    yt = 5.0 * t * c *
-         (0.2969 * std::sqrt(xc[i] / c) +
-          ((((-0.1015) * (xc[i] / c) + 0.2843) * (xc[i] / c) - 0.3516) *
-               (xc[i] / c) -
-           0.1260) *
-              (xc[i] / c));
-
-    if (0.0 <= xc[i] / c && xc[i] / c <= p) {
-      yc = m * xc[i] * (2.0 * p - xc[i] / c) / p / p;
-    } else if (p <= xc[i] / c && xc[i] / c <= 1.0) {
-      yc =
-          m * (xc[i] - c) * (2.0 * p - xc[i] / c - 1.0) / (1.0 - p) / (1.0 - p);
-    } else {
-      yc = 0.0;
-    }
+    double yc = [&]() {
+      if (0.0 <= xc[i] / c && xc[i] / c <= p) {
+        return m * xc[i] * (2.0 * p - xc[i] / c) / p / p;
+      } else if (p <= xc[i] / c && xc[i] / c <= 1.0) {
+        return m * (xc[i] - c) * (2.0 * p - xc[i] / c - 1.0) / (1.0 - p) /
+               (1.0 - p);
+      } else {
+        return 0.0;
+      }
+    }();
 
     xu[i] = xc[i] - yt * std::sin(theta);
     yu[i] = yc + yt * std::cos(theta);
@@ -142,12 +139,9 @@ double *naca4_symmetric(double t, double c, int n, double x[]) {
   //    corresponding value of Y so that (X,Y) is on the upper wing surface, and
   //    (X,-Y) is on the lower wing surface.
   //
-  int i;
-  double *y;
+  double *y = new double[n];
 
-  y = new double[n];
-
-  for (i = 0; i < n; i++) {
+  for (int i = 0; i < n; i++) {
     y[i] = 5.0 * t * c *
            (0.2969 * std::sqrt(x[i] / c) +
             ((((-0.1015) * (x[i] / c) + 0.2843) * (x[i] / c) - 0.3516) *
@@ -179,7 +173,8 @@ void r8mat_write(std::string output_filename, int m, int n, double table[]) {
   //
   for (j = 0; j < n; j++) {
     for (i = 0; i < m; i++) {
-      output << "  " << std::setw(24) << std::setprecision(16) << table[i + j * m];
+      output << "  " << std::setw(24) << std::setprecision(16)
+             << table[i + j * m];
     }
     output << "\n";
   }
