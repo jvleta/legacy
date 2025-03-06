@@ -11,10 +11,7 @@
 
 namespace {
   void r8mat_write(std::string output_filename, int m, int n, const std::vector<double>& table) {
-    int i;
-    int j;
     std::ofstream output;
-
     output.open(output_filename.c_str());
 
     if (!output) {
@@ -24,8 +21,8 @@ namespace {
       std::exit(1);
     }
 
-    for (j = 0; j < n; j++) {
-      for (i = 0; i < m; i++) {
+    for (auto j = 0; j < n; j++) {
+      for (auto i = 0; i < m; i++) {
         output << "  " << std::setw(24) << std::setprecision(16)
                << table[i + j * m];
       }
@@ -94,52 +91,42 @@ void test01() {
   //    John Burkardt
   //
 
-  double c;
   std::string command_filename = "symmetric_commands.txt";
   std::ofstream command_unit;
   std::string data_filename = "symmetric_data.txt";
-  int i;
   int n = 51;
-  double ratio;
-  double t;
-  std::vector<double> x;
-  double x_max;
-  double x_min;
   std::vector<double> xy;
-  std::vector<double> y;
-  double y_max;
-  double y_min;
-
+  
   std::cout << "\n";
   std::cout << "TEST01\n";
   std::cout << "  NACA4_SYMMETRIC evaluates y(x) for a NACA\n";
   std::cout << "  symmetric airfoil defined by a 4-digit code.\n";
 
-  c = 10.0;
-  t = 0.15;
-  x = r8vec_linspace_new(n, 0.0, c);
-  y = naca4_symmetric(t, c, n, x);
+  const auto c = 10.0;
+  const auto t = 0.15;
+  const auto x = r8vec_linspace_new(n, 0.0, c);
+  const auto y = naca4_symmetric(t, c, n, x);
   //
   //  Reorganize data into a single object.
   //
   xy.resize(2 * 2 * n);
 
-  for (i = 0; i < n; i++) {
+  for (auto i = 0; i < n; i++) {
     xy[0 + i * 2] = x[i];
     xy[1 + i * 2] = -y[i];
   }
-  for (i = 0; i < n; i++) {
+  for (auto i = 0; i < n; i++) {
     xy[0 + (n + i) * 2] = x[n - 1 - i];
     xy[1 + (n + i) * 2] = y[n - 1 - i];
   }
   //
   //  Determine size ratio.
   //
-  x_min = r8vec_min(n, x);
-  x_max = r8vec_max(n, x);
-  y_max = r8vec_max(n, y);
-  y_min = -y_max;
-  ratio = (y_max - y_min) / (x_max - x_min);
+  const auto x_min = r8vec_min(n, x);
+  const auto x_max = r8vec_max(n, x);
+  const auto y_max = r8vec_max(n, y);
+  const auto y_min = -y_max;
+  const auto ratio = (y_max - y_min) / (x_max - x_min);
   //
   //  Save data to a file.
   //
@@ -189,24 +176,13 @@ void test02() {
   //    John Burkardt
   //
 
-  double c;
   std::string command_filename = "cambered_commands.txt";
   std::ofstream command_unit;
   std::string data_filename = "cambered_data.txt";
-  int i;
-  double m;
   int n = 51;
-  double p;
-  double ratio;
-  double t;
-  double x_max;
-  double x_min;
-  std::vector<double> xc;
   std::vector<double> xl;
   std::vector<double> xu;
   std::vector<double> xy;
-  double y_max;
-  double y_min;
   std::vector<double> yl;
   std::vector<double> yu;
 
@@ -215,12 +191,12 @@ void test02() {
   std::cout << "  NACA4_CAMBERED evaluates (xu,yu) and (xl,yl) for a NACA\n";
   std::cout << "  cambered airfoil defined by a 4-digit code.\n";
 
-  m = 0.02;
-  p = 0.4;
-  t = 0.12;
-  c = 10.0;
+  const auto m = 0.02;
+  const auto p = 0.4;
+  const auto t = 0.12;
+  const auto c = 10.0;
 
-  xc = r8vec_linspace_new(n, 0.0, c);
+  const auto xc = r8vec_linspace_new(n, 0.0, c);
 
   xu.resize(n);
   xl.resize(n);
@@ -233,22 +209,22 @@ void test02() {
   //
   xy.resize(2 * 2 * n);
 
-  for (i = 0; i < n; i++) {
+  for (auto i = 0; i < n; i++) {
     xy[0 + i * 2] = xl[i];
     xy[1 + i * 2] = yl[i];
   }
-  for (i = 0; i < n; i++) {
+  for (auto i = 0; i < n; i++) {
     xy[0 + (n + i) * 2] = xu[n - 1 - i];
     xy[1 + (n + i) * 2] = yu[n - 1 - i];
   }
   //
   //  Determine size ratio.
   //
-  x_min = std::fmin(r8vec_min(n, xl), r8vec_min(n, xu));
-  x_max = std::fmax(r8vec_max(n, xl), r8vec_max(n, xu));
-  y_min = std::fmin(r8vec_min(n, yl), r8vec_min(n, yu));
-  y_max = std::fmax(r8vec_max(n, yl), r8vec_max(n, yu));
-  ratio = (y_max - y_min) / (x_max - x_min);
+  const auto x_min = std::fmin(r8vec_min(n, xl), r8vec_min(n, xu));
+  const auto x_max = std::fmax(r8vec_max(n, xl), r8vec_max(n, xu));
+  const auto y_min = std::fmin(r8vec_min(n, yl), r8vec_min(n, yu));
+  const auto y_max = std::fmax(r8vec_max(n, yl), r8vec_max(n, yu));
+  const auto ratio = (y_max - y_min) / (x_max - x_min);
   //
   //  Save data to a file.
   //

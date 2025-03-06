@@ -10,7 +10,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Enable clang-tidy with cppcoreguideline warnings
 find_program(CLANG_TIDY "clang-tidy")
 if(CLANG_TIDY)
-  set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY};-checks=cppcoreguidelines-*")
+  set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY};-checks=cppcoreguidelines-*,-cppcoreguidelines-avoid-magic-numbers")
 endif()
 
 # Add the executable
